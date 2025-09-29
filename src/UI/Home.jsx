@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from 'react-helmet-async';
 import Sidebar from "./Sidebar";
 import Addlocket from "./Addlocket";
 import FriendList from "./Friend/FriendList";
@@ -11,6 +12,10 @@ setFriends([...friends, newFriend]);
 };
 
 return ( <div className="">
+    <Helmet>
+      <title>Locket - Trang chủ</title>
+      <meta name="description" content="Trang chủ Locket: xem hoạt động, kết bạn và chia sẻ nội dung cho cộng đồng sinh viên." />
+    </Helmet>
 {/* Background động */} 
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-gray-50">
       <div className="absolute -top-10 -right-10 w-72 sm:w-96 h-72 sm:h-96 

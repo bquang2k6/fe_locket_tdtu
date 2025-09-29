@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 function FriendItem({ friend }) {
   const username = friend.link?.replace("https://locket.cam/", "") || "";
 
@@ -18,7 +19,17 @@ function FriendItem({ friend }) {
       </div>
 
       {/* Nút add */}
-      <button className="bg-yellow-400 hover:bg-yellow-500 text-white text-sm font-medium px-4 py-1 rounded-full transition">
+      <button
+        className="bg-yellow-400 hover:bg-yellow-500 text-white text-sm font-medium px-4 py-1 rounded-full transition cursor-pointer"
+        onClick={() => {
+          if (friend.link) {
+            window.open(friend.link, "_blank"); // 👉 mở tab mới
+          } else {
+            alert("Không tìm thấy link bạn bè!");
+          }
+        }}
+        aria-label={`Thêm bạn ${username}`}
+      >
         add friend
       </button>
     </div>
@@ -34,7 +45,6 @@ function FriendList() {
       .then((data) => setFriends(data))
       .catch((err) => console.error("Lỗi khi fetch link-locket:", err));
   }, []);
-
 
   return (
     <div className="max-w-md mx-auto">

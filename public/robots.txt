@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://locket-tdtu.wangtech.top/sitemap.xml

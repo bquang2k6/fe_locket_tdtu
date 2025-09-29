@@ -5,6 +5,15 @@ function FriendItem({ friend }) {
   // Lấy username bằng cách xóa tiền tố
   const username = friend.link?.replace("https://locket.cam/", "") || "";
 
+  const handleAddFriend = () => {
+    if (friend.link) {
+      // chuyển sang link của bạn bè
+      window.location.href = friend.link;
+    } else {
+      alert("Không tìm thấy link bạn bè!");
+    }
+  };
+
   return (
     <div className="friend-item">
       <img
@@ -16,7 +25,9 @@ function FriendItem({ friend }) {
         <div>username: {username}</div>
         <div>Tên: {friend.name}</div>
       </div>
-      <button className="add-btn">Thêm bạn bè</button>
+      <button className="add-btn" onClick={handleAddFriend}>
+        Thêm bạn bè
+      </button>
     </div>
   );
 }
