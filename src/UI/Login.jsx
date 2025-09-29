@@ -4,7 +4,7 @@ function Login({ onLogin }) {
 const [mssv, setMssv] = useState("");
 const [error, setError] = useState("");
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
 e.preventDefault();
 setError("");
 
@@ -29,10 +29,12 @@ try {
     throw new Error("Không nhận được token từ server");
   }
 
+  // store token locally and notify parent with the token so it can update state
   localStorage.setItem("token", data.token);
   localStorage.setItem("mssv", mssv);
 
-  onLogin(mssv);
+  // Pass token to parent to avoid cases where App overwrites token with undefined
+  onLogin(mssv, data.token);
 } catch (err) {
   setError(err.message);
 }

@@ -17,11 +17,10 @@ function App() {
 
   // Khi app load → check token với server
   useEffect(() => {
-    const token = localStorage.getItem("token");
     const mssv = localStorage.getItem("mssv");
 
-    if (token && mssv) {
-      verifyToken(token).then((isValid) => {
+    if (mssv) {
+      verifyToken().then((isValid) => {
         if (isValid) {
           setStudentId(mssv);
         } else {
@@ -34,8 +33,10 @@ function App() {
     }
   }, []);
 
+
   // Hàm login
   const handleLogin = (mssv, token) => {
+    console.log("Lưu token:", token); // debug
     setStudentId(mssv);
     localStorage.setItem("mssv", mssv);
     localStorage.setItem("token", token);

@@ -1,18 +1,16 @@
-// src/api/auth.js
-export async function verifyToken(token) {
+export async function verifyToken() {
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/links`, {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/keep-live`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    if (res.ok) {
-      return true; // token hợp lệ
-    } else {
-      return false; // token hết hạn hoặc sai
-    }
+    return res.ok;
   } catch (err) {
     console.error("Verify token error:", err);
     return false;
