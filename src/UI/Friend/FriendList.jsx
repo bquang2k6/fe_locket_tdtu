@@ -29,11 +29,12 @@ function FriendList() {
   const [friends, setFriends] = React.useState([]);
 
   React.useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_URL}/api/link-locket`)
-    .then((res) => res.json())
-    .then((data) => setFriends(data))
-    .catch((err) => console.error("Lỗi khi fetch link-locket:", err));
-}, []);
+    fetch(`${import.meta.env.VITE_API_URL}/api/link-locket`)
+      .then((res) => res.json())
+      .then((data) => setFriends(data))
+      .catch((err) => console.error("Lỗi khi fetch link-locket:", err));
+  }, []);
+
 
   return (
     <div className="max-w-md mx-auto">
