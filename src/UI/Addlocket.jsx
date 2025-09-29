@@ -32,7 +32,7 @@ function Addlocket() {
       setName("");
     } catch (err) {
       console.error(err);
-      alert("Có lỗi xảy ra, xem console để biết chi tiết.");
+      alert("link đã được thêm trước đó rồi hoặc sai mssv");
     }
   };
 
