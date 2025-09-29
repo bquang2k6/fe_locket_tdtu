@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Helmet } from 'react-helmet-async';
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Addlocket from "./Addlocket";
 import FriendList from "./Friend/FriendList";
@@ -11,11 +10,23 @@ const handleAdd = (newFriend) => {
 setFriends([...friends, newFriend]);
 };
 
-return ( <div className="">
-    <Helmet>
-      <title>Locket - Trang chủ</title>
-      <meta name="description" content="Trang chủ Locket: xem hoạt động, kết bạn và chia sẻ nội dung cho cộng đồng sinh viên." />
-    </Helmet>
+function usePageMeta(title, description) {
+  useEffect(() => {
+    if (title) document.title = title;
+    if (description) {
+      let el = document.querySelector('meta[name="description"]');
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute('name', 'description');
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', description);
+    }
+  }, [title, description]);
+}
+
+return ( <div className=""> 
+    {usePageMeta('Locket - Trang chủ', 'Trang chủ Locket: xem hoạt động, kết bạn và chia sẻ nội dung cho cộng đồng sinh viên.')}
 {/* Background động */} 
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-gray-50">
       <div className="absolute -top-10 -right-10 w-72 sm:w-96 h-72 sm:h-96 
