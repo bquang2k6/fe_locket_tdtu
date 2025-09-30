@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import BouncyLoader from "../status/Bouncy"; // loader của bạn
 
 function FriendItem({ friend }) {
   const username = friend.link?.replace("https://locket.cam/", "") || "";
@@ -38,39 +37,20 @@ function FriendItem({ friend }) {
 }
 
 function FriendList() {
-  const [friends, setFriends] = useState([]);
-  const [loading, setLoading] = useState(true); // state loading
+  const [friends, setFriends] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/link-locket`)
       .then((res) => res.json())
       .then((data) => setFriends(data))
-      .catch((err) => console.error("Lỗi khi fetch link-locket:", err))
-      .finally(() => setLoading(false)); // tắt loading
+      .catch((err) => console.error("Lỗi khi fetch link-locket:", err));
   }, []);
-
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-6">
-        <div className="inline-grid *:[grid-area:1/1]">
-          <div className="status status-warning animate-bounce"></div>
-        </div>
-        <span className="text-orange-600 font-medium flex items-center mt-3">
-          Đang kiểm tải <BouncyLoader size={20} color="orange" />
-        </span>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-md mx-auto">
-      {friends.length > 0 ? (
-        friends.map((friend) => <FriendItem key={friend.id} friend={friend} />)
-      ) : (
-        <div className="text-center text-gray-500 py-4">
-          Không có danh sách nào nào
-        </div>
-      )}
+      {friends.map((friend) => (
+        <FriendItem key={friend.id} friend={friend} />
+      ))}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import StatusServer from "./status/StatusServer"
 
 function Login({ onLogin }) {
 const [mssv, setMssv] = useState("");
@@ -67,7 +68,7 @@ return (
       <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-2 gradient-text">
         🎓 TDTU Locket
       </h2>
-      <p className="text-gray-600 mb-6 text-sm sm:text-base">
+      <p className="text-gray-600 mb-6 text-sm sm:text-base mt-3">
         Nhập MSSV để tiếp tục
       </p>
 
@@ -89,6 +90,8 @@ return (
         >
           Đăng nhập
         </button>
+        <span className="text-xs">Vui lòng chờ Server02 khởi động.</span>
+          <StatusServer />
       </form>
     </div>
   </div>
