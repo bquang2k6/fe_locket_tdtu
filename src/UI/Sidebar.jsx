@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LogOut, HelpCircle, Menu } from "lucide-react";
+import { LogOut, HelpCircle, Menu, Upload } from "lucide-react";
 
 function Sidebar({ onLogout }) {
 const [open, setOpen] = useState(false);
@@ -33,6 +33,15 @@ className="fixed top-0 left-0 w-full p-3 bg-white/80 backdrop-blur-lg shadow-xl 
         <LogOut className="w-5 h-5 text-red-500" />
         <span className="font-medium">Đăng xuất</span>
       </button>
+      <a
+        href="https://locket.wangtech.top"
+        target="_blank"
+        className="flex items-center gap-3 px-5 py-3 text-green-700 hover:bg-gradient-to-r hover:from-green-100 hover:to-green-300 transition-colors"
+      >
+        <Upload className="w-5 h-5 text-green-500" />
+        <span className="font-medium">Locket upload</span>
+      </a>
+
     </div>
   )}
 
