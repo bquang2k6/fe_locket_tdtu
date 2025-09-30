@@ -3,6 +3,7 @@ import Home from "./UI/Home";
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import { verifyToken } from "./api/auth";
+import LoadingPage from "./UI/pages/LoadingPage";
 
 function App() {
   const [studentId, setStudentId] = useState(null);
@@ -43,6 +44,13 @@ function App() {
   };
 
   // ❌ bỏ chặn giao diện khi loading
+  // While we're verifying the token with the server, don't render the login UI
+  if (loading) {
+    return (
+      <LoadingPage />
+    );
+  }
+
   return (
     <div>
       {!studentId ? (

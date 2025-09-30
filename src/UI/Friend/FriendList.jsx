@@ -56,7 +56,7 @@ function FriendList() {
           <div className="status status-warning animate-bounce"></div>
         </div>
         <span className="text-orange-600 font-medium flex items-center mt-3">
-          Đang kiểm tải <BouncyLoader size={20} color="orange" />
+          Đang tải danh sách <BouncyLoader size={20} color="orange" />
         </span>
       </div>
     );
@@ -68,7 +68,7 @@ function FriendList() {
         friends.map((friend) => <FriendItem key={friend.id} friend={friend} />)
       ) : (
         <div className="text-center text-gray-500 py-4">
-          Không có danh sách nào nào
+          Không có danh sách nào
         </div>
       )}
     </div>
