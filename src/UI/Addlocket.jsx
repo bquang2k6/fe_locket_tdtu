@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./home.css";
 
 function Addlocket() {
   const [password, setPassword] = useState("");
@@ -7,6 +8,21 @@ function Addlocket() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Kiểm tra dữ liệu đầu vào trước khi gọi API
+    if (!password.trim() || !link.trim() || !name.trim()) {
+      alert("⚠️ Vui lòng nhập đầy đủ tất cả các ô!");
+      return;
+    }
+    if (name.trim().split(/\s+/).length > 6) {
+      alert("⚠️ Tên/biệt danh không được quá 6 từ!");
+      return;
+    }
+
+
+
+
+
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -27,7 +43,6 @@ function Addlocket() {
       const data = await res.json();
       console.log("Response:", data);
 
-      // Kiểm tra xem API trả về có đúng cấu trúc không
       if (
         data &&
         typeof data === "object" &&
@@ -37,9 +52,9 @@ function Addlocket() {
         "avatar" in data
       ) {
         alert("✅ Thêm thành công!");
-        window.location.reload(); // Load lại trang
+        window.location.reload();
       } else {
-        alert("❌ API không trả về đúng cấu trúc dữ liệu!");
+        alert(" API không trả về đúng cấu trúc dữ liệu!");
       }
 
       setPassword("");
@@ -47,15 +62,13 @@ function Addlocket() {
       setName("");
     } catch (err) {
       console.error(err);
-      alert("⚠️ Link đã được thêm trước đó hoặc sai mssv");
+      alert(" Link đã được thêm trước đó hoặc sai mssv");
     }
   };
 
+
   return (
     <div>
-      <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-        ➕ Thêm link Locket
-      </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -75,25 +88,46 @@ function Addlocket() {
             type="text"
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            placeholder="Nhập link Locket hoặc username"
+            placeholder="Link Locket or username"
             className="w-full p-3 rounded-xl border border-blue-200 bg-white/70 backdrop-blur-sm focus:ring-2 focus:ring-blue-400 focus:outline-none shadow-md text-gray-900 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium mb-2">👤 Tên hoặc biệt danh</label>
+          <label className="block text-gray-700 font-medium mb-2">
+            👤 Tên hoặc biệt danh
+            <p className="text-sm text-gray-500">tối đa 6 từ</p>
+          </label>
           <input
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              // Giữ chữ cái + khoảng trắng, bỏ ký tự khác
+              let value = e.target.value.replace(/[^a-zA-ZÀ-ỹ\s]/g, "");
+
+              // Tách từ theo khoảng trắng (cho phép nhiều space)
+              let words = value.split(/\s+/).filter(Boolean); // bỏ từ rỗng
+
+              if (words.length > 6) {
+                words = words.slice(0, 6); // giữ tối đa 6 từ
+              }
+
+              // Nếu người dùng đang gõ thêm khoảng trắng thì vẫn cho hiển thị
+              if (value.endsWith(" ")) {
+                setName(words.join(" ") + " ");
+              } else {
+                setName(words.join(" "));
+              }
+            }}
             placeholder="Nhập tên hoặc nickname"
             className="w-full p-3 rounded-xl border border-pink-200 bg-white/70 backdrop-blur-sm focus:ring-2 focus:ring-pink-400 focus:outline-none shadow-md text-gray-900 placeholder-gray-400"
           />
         </div>
 
+
         <button
           type="submit"
-          className="w-full py-3 px-6 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:opacity-90 transition-all duration-300"
+          className="w-full py-3 px-6 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:opacity-90 transition-all duration-300 gradient-bg"
         >
           🚀 Thêm link Locket
         </button>

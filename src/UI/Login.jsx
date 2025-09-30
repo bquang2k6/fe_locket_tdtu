@@ -64,7 +64,7 @@ return (
     <div className="relative z-10 bg-white/80 backdrop-blur-lg border border-white/20 
       rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-sm sm:max-w-md text-center 
       transform transition-all duration-500 hover:scale-[1.02] hover:shadow-3xl">
-      <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-2">
+      <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-2 gradient-text">
         🎓 TDTU Locket
       </h2>
       <p className="text-gray-600 mb-6 text-sm sm:text-base">
@@ -85,7 +85,7 @@ return (
         <button
           type="submit"
           className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 
-            text-white font-semibold shadow-md hover:opacity-90 transition text-sm sm:text-base"
+            text-white font-semibold shadow-md hover:opacity-90 transition text-sm sm:text-base gradient-bg"
         >
           Đăng nhập
         </button>
