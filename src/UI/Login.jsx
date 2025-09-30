@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import StatusServer from "./status/StatusServer"
+import Sidebar from "./Sidebar"
 
 function Login({ onLogin }) {
 const [mssv, setMssv] = useState("");
@@ -45,6 +46,7 @@ try {
 return (
   <div className="">
     {/* Hiệu ứng nền */}
+    <Sidebar />
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-gray-50">
       <div className="absolute -top-10 -right-10 w-72 sm:w-96 h-72 sm:h-96 
         bg-gradient-to-br from-purple-300 to-pink-300 rounded-full 

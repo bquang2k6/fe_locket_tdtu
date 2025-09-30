@@ -18,7 +18,7 @@ className="fixed top-0 left-0 w-full p-3 bg-white/80 backdrop-blur-lg shadow-xl 
   {open && (
     <div className="absolute right-0 mt-9 -mr-5 w-56 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/30 overflow-hidden animate-fadeIn">
       <a
-        href="https:wangtech.top"
+        href="https://wangtech.top"
         target="_blank"
         className="flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 transition-colors"
       >
