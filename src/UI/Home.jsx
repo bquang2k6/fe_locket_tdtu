@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import Addlocket from "./Addlocket";
 import FriendList from "./Friend/FriendList";
 import "./home.css";
+import PopupNotification from "./PopupNotification/index"
 
 function Home({ studentId, onLogout }) {
 const [friends, setFriends] = useState([]);
@@ -71,6 +72,7 @@ return ( <div className="">
           <FriendList friends={friends} />
         </div>
       </div>
+      <PopupNotification />
     </div>
   </div>
 

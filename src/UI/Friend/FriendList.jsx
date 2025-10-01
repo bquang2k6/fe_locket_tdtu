@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import BouncyLoader from "../status/Bouncy"; // loader của bạn
 
 function FriendItem({ friend }) {
-  const username = friend.link?.replace("https://locket.cam/", "") || "";
+  const username = friend.link
+    ?.replace("https://locket.cam/", "")
+    .replace("https://locket.camera/links/", "") || "";
+
 
   return (
     <div className="flex items-center justify-between bg-gray-100 rounded-xl p-3 shadow-sm -ml-4 -mr-4 -mt-4 -mb-4">
       {/* Avatar */}
       <img
-        src={friend.avatar || "/avatar.png"}
+        // src={friend.avatar || "/avatar.png"}
+        src={friend.avatar || "https://locket.cam/favicon.ico"}
         alt="avatar"
         className="w-12 h-12 rounded-full border-2 border-yellow-500 mr-3"
       />

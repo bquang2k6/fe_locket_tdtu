@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { LogOut, HelpCircle, Menu, Upload } from "lucide-react";
+import { LogOut, HelpCircle, Menu, Upload, Lightbulb, Home } from "lucide-react";
+import { Link } from "react-router-dom";   // thêm dòng này
 
 function Sidebar({ onLogout }) {
 const [open, setOpen] = useState(false);
@@ -18,6 +19,14 @@ className="fixed top-0 left-0 w-full p-3 bg-white/80 backdrop-blur-lg shadow-xl 
   {open && (
     <div className="absolute right-0 mt-9 -mr-5 w-56 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/30 overflow-hidden animate-fadeIn">
       <a
+        href="https://locket-tdtu.wangtech.top"
+        target="_blank"
+        className="flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 transition-colors"
+      >
+        <Home className="w-5 h-5 text-purple-500" />
+        <span className="font-medium">Trang chủ</span>
+      </a>
+      <a
         href="https://wangtech.top"
         target="_blank"
         className="flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 transition-colors"
@@ -26,13 +35,7 @@ className="fixed top-0 left-0 w-full p-3 bg-white/80 backdrop-blur-lg shadow-xl 
         <span className="font-medium">Báo lỗi</span>
       </a>
 
-      <button
-        onClick={onLogout}
-        className="w-full flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-red-100 hover:to-pink-100 transition-colors"
-      >
-        <LogOut className="w-5 h-5 text-red-500" />
-        <span className="font-medium">Đăng xuất</span>
-      </button>
+      
       <a
         href="https://locket.wangtech.top"
         target="_blank"
@@ -42,6 +45,20 @@ className="fixed top-0 left-0 w-full p-3 bg-white/80 backdrop-blur-lg shadow-xl 
         <span className="font-medium">Locket upload</span>
       </a>
 
+      <Link
+        to="/Hdlink"
+        className="w-full flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-red-100 hover:to-pink-100 transition-colors"
+      >
+        <Lightbulb className="w-5 h-5 text-red-500" />
+        <span className="font-medium">Hướng dẫn lấy link</span>
+      </Link>
+      <button
+        onClick={onLogout}
+        className="w-full flex items-center gap-3 px-5 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-red-100 hover:to-pink-100 transition-colors"
+      >
+        <LogOut className="w-5 h-5 text-red-500" />
+        <span className="font-medium">Đăng xuất</span>
+      </button>
     </div>
   )}
 

@@ -1,9 +1,11 @@
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom"; // thêm router
 import Login from "./UI/Login";
 import Home from "./UI/Home";
 import "./App.css";
-import React, { useState, useEffect } from "react";
 import { verifyToken } from "./api/auth";
 import LoadingPage from "./UI/pages/LoadingPage";
+import Hdlink from "./UI/Hdlink"; // import trang hướng dẫn link
 
 function App() {
   const [studentId, setStudentId] = useState(null);
@@ -34,7 +36,6 @@ function App() {
     }
   }, []);
 
-
   // Hàm login
   const handleLogin = (mssv, token) => {
     console.log("Lưu token:", token); // debug
@@ -43,22 +44,30 @@ function App() {
     localStorage.setItem("token", token);
   };
 
-  // ❌ bỏ chặn giao diện khi loading
-  // While we're verifying the token with the server, don't render the login UI
+  // Loading
   if (loading) {
-    return (
-      <LoadingPage />
-    );
+    return <LoadingPage />;
   }
 
   return (
-    <div>
-      {!studentId ? (
-        <Login onLogin={handleLogin} />
-      ) : (
-        <Home studentId={studentId} onLogout={handleLogout} />
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* Trang chính */}
+        <Route
+          path="/"
+          element={
+            !studentId ? (
+              <Login onLogin={handleLogin} />
+            ) : (
+              <Home studentId={studentId} onLogout={handleLogout} />
+            )
+          }
+        />
+
+        {/* Trang hướng dẫn lấy link */}
+        <Route path="/Hdlink" element={<Hdlink />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
