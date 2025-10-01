@@ -62,9 +62,9 @@ function GetLinkGuide({ onLogout }) {
               <li>Mở ứng dụng <b>Locket</b> trên điện thoại của bạn.</li>
               <li>Chuyển đến trang <b>Profile</b> (hồ sơ).</li>
               <li>Nhấn vào nút <b>Chia sẻ</b> hoặc <b>Share Profile</b>.</li>
-              <img src="./b1.jpg" />
+              <img src="./b1.jpg" className="w-40 sm:w-56 md:w-64 lg:w-72 mx-auto rounded-xl shadow-md" />
               <li>Nhấn vào nút <b>Chia sẻ</b> hoặc <b>Share Profile</b>.</li>
-              <img src="./b2.jpg" />
+              <img src="./b2.jpg" className="w-40 sm:w-56 md:w-64 lg:w-72 mx-auto rounded-xl shadow-md" />
             </ol>
             <p className="text-center mt-4 text-gray-500">
               Ví dụ link: <code className="bg-gray-100 px-2 py-1 rounded">https://locket.cam/username</code>
@@ -78,7 +78,7 @@ function GetLinkGuide({ onLogout }) {
               <ul className="list-disc list-inside text-gray-700 space-y-2">
                 <li>Mở ứng dụng <b>Locket</b> trên điện thoại của bạn.</li>
                 <li>Chuyển đến trang <b>Profile</b> (hồ sơ).</li>
-                <img src="./c2.jpg" />
+                <img src="./c2.jpg" className="w-40 sm:w-56 md:w-64 lg:w-72 mx-auto rounded-xl shadow-md" />
                 <li>Lấy phần <b>Username</b></li>
               </ul>
             </div>

@@ -9,7 +9,7 @@ return ( <div className="fixed top-6 right-6 z-50">
 {/* Nút menu */}
 <button
 onClick={() => setOpen(!open)}
-className="fixed top-0 left-0 w-full p-3 bg-white/80 backdrop-blur-lg shadow-xl border-b border-white/30 hover:scale-105 hover:shadow-2xl transition-all duration-300 z-50 flex items-center">
+className="fixed top-0 left-0 w-full p-3 bg-white/80 backdrop-blur-lg shadow-xl border-b border-white/30 transition-all duration-300 z-50 flex items-center">
   <div className="ml-auto">
     <Menu className="w-6 h-6 text-purple-600" />
   </div> </button>
