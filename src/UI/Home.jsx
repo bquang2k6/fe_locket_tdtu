@@ -58,7 +58,7 @@ return ( <div className="">
           Xin chào Tdtu 🎓
         </h3>
         <p className="text-center text-gray-600">
-          Hãy chia sẻ link locket để có thêm bạn mới 
+          Hãy chia sẻ link locket để có thêm bạn, ny
         </p>
         <Addlocket onAdd={handleAdd} />
       </div>
