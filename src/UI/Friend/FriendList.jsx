@@ -6,12 +6,10 @@ function FriendItem({ friend }) {
     ?.replace("https://locket.cam/", "")
     .replace("https://locket.camera/links/", "") || "";
 
-
   return (
     <div className="flex items-center justify-between bg-gray-100 rounded-xl p-3 shadow-sm -ml-4 -mr-4 -mt-4 -mb-4">
       {/* Avatar */}
       <img
-        // src={friend.avatar || "/avatar.png"}
         src={friend.avatar || "https://locket.cam/favicon.ico"}
         alt="avatar"
         className="w-12 h-12 rounded-full border-2 border-yellow-500 mr-3"
@@ -28,7 +26,7 @@ function FriendItem({ friend }) {
         className="bg-yellow-400 hover:bg-yellow-500 text-white text-sm font-medium px-4 py-1 rounded-full transition cursor-pointer"
         onClick={() => {
           if (friend.link) {
-            window.open(friend.link, "_blank"); // 👉 mở tab mới
+            window.open(friend.link, "_blank");
           } else {
             alert("Không tìm thấy link bạn bè!");
           }
@@ -43,24 +41,55 @@ function FriendItem({ friend }) {
 
 function FriendList() {
   const [friends, setFriends] = useState([]);
-  const [loading, setLoading] = useState(true); // state loading
+  const [loading, setLoading] = useState(true);
 
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 15;
+  // tokenStack[i] = nextToken cần truyền để lấy trang i+1
+  // tokenStack[0] = undefined → trang 1 không cần token
+  const [tokenStack, setTokenStack] = useState([undefined]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+
+  const currentToken = tokenStack[currentIndex];
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/link-locket`)
+    setLoading(true);
+    const url = currentToken
+      ? `${import.meta.env.VITE_API_URL}/api/link-locket?nextToken=${currentToken}&limit=20`
+      : `${import.meta.env.VITE_API_URL}/api/link-locket?limit=20`;
+
+    fetch(url)
       .then((res) => res.json())
-      .then((data) => setFriends(data))
-      .catch((err) => console.error("Lỗi khi fetch link-locket:", err))
-      .finally(() => setLoading(false)); // tắt loading
-  }, []);
+      .then((data) => {
+        setFriends(data.items || []);
+        setHasMore(data.hasMore || false);
 
-  // Reset to first page when friends change (e.g., new fetch)
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [friends.length]);
+        // Lưu nextToken vào stack nếu chưa có
+        if (data.hasMore && data.nextToken && currentIndex === tokenStack.length - 1) {
+          setTokenStack((prev) => {
+            const next = [...prev];
+            if (next[currentIndex + 1] !== data.nextToken) {
+              next[currentIndex + 1] = data.nextToken;
+            }
+            return next;
+          });
+        }
+      })
+      .catch((err) => console.error("Lỗi khi fetch link-locket:", err))
+      .finally(() => setLoading(false));
+  }, [currentToken]);
+
+  // Số trang đã biết = tokenStack.length (mỗi phần tử là 1 trang)
+  // Nếu hasMore thì còn ít nhất 1 trang nữa chưa load
+  const knownPages = tokenStack.length;
+  const totalPages = hasMore ? knownPages + 1 : knownPages;
+  const page = currentIndex + 1; // 1-indexed
+
+  function goToPage(n) {
+    const next = Math.min(Math.max(1, n), knownPages); // chỉ đi được đến trang đã biết token
+    setCurrentIndex(next - 1);
+    const container = document.querySelector(".friend-list-container");
+    if (container) container.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   if (loading) {
     return (
@@ -75,30 +104,12 @@ function FriendList() {
     );
   }
 
-  const totalItems = friends.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
-
-  // clamp current page
-  const page = Math.min(Math.max(1, currentPage), totalPages);
-
-  const startIdx = (page - 1) * ITEMS_PER_PAGE;
-  const endIdx = startIdx + ITEMS_PER_PAGE;
-  const visibleFriends = friends.slice(startIdx, endIdx);
-
-  function goToPage(n) {
-    const next = Math.min(Math.max(1, n), totalPages);
-    setCurrentPage(next);
-    // scroll to top of list for UX
-    const container = document.querySelector('.friend-list-container');
-    if (container) container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
   return (
     <div className="max-w-md mx-auto">
-      {totalItems > 0 ? (
+      {friends.length > 0 ? (
         <div className="space-y-3">
           <div className="friend-list-container space-y-2">
-            {visibleFriends.map((friend) => (
+            {friends.map((friend) => (
               <FriendItem key={friend.id} friend={friend} />
             ))}
           </div>
@@ -107,7 +118,7 @@ function FriendList() {
           {totalPages > 1 && (
             <div className="flex items-center justify-center space-x-2 mt-3">
               <button
-                className="px-3 py-1 rounded-md bg-gray-400 hover:bg-gray-300 text-sm"
+                className="px-3 py-1 rounded-md bg-gray-400 hover:bg-gray-300 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() => goToPage(page - 1)}
                 disabled={page === 1}
                 aria-label="Previous page"
@@ -115,41 +126,48 @@ function FriendList() {
                 Prev
               </button>
 
-              {/* Show page numbers but avoid a huge list: show first, last, neighbors */}
               <div className="flex items-center space-x-1">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
-                  // only render if near current page or first/last or small total
+                {/* Trang đã biết */}
+                {Array.from({ length: knownPages }, (_, i) => i + 1).map((p) => {
                   if (
-                    totalPages > 7 &&
+                    knownPages > 7 &&
                     p !== 1 &&
-                    p !== totalPages &&
+                    p !== knownPages &&
                     Math.abs(p - page) > 1
                   ) {
-                    // insert ellipsis marker instead of numbers — handled below
                     return null;
                   }
-
                   return (
                     <button
                       key={p}
                       onClick={() => goToPage(p)}
-                      className={`px-2 py-1 rounded-md text-sm ${p === page ? 'bg-yellow-400 text-black' : 'text-black bg-gray-100 hover:bg-gray-200'}`}
-                      aria-current={p === page ? 'page' : undefined}
+                      className={`px-2 py-1 rounded-md text-sm ${
+                        p === page
+                          ? "bg-yellow-400 text-black"
+                          : "text-black bg-gray-100 hover:bg-gray-200"
+                      }`}
+                      aria-current={p === page ? "page" : undefined}
                     >
                       {p}
                     </button>
                   );
                 })}
 
-                {/* If there are skipped pages, render small ellipses and neighbors */}
-                {totalPages > 7 && page > 3 && <span className="px-2">...</span>}
-                {totalPages > 7 && page < totalPages - 2 && <span className="px-2">...</span>}
+                {/* Ellipsis nếu còn trang chưa load */}
+                {hasMore && <span className="px-2 text-gray-500">...</span>}
+
+                {knownPages > 7 && page > 3 && (
+                  <span className="px-2">...</span>
+                )}
+                {knownPages > 7 && page < knownPages - 2 && (
+                  <span className="px-2">...</span>
+                )}
               </div>
 
               <button
-                className="px-3 py-1 rounded-md bg-gray-400 hover:bg-gray-300 text-sm"
+                className="px-3 py-1 rounded-md bg-gray-400 hover:bg-gray-300 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() => goToPage(page + 1)}
-                disabled={page === totalPages}
+                disabled={page === knownPages && !hasMore}
                 aria-label="Next page"
               >
                 Next
