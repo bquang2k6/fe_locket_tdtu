@@ -3,28 +3,39 @@ import Sidebar from "../Sidebar";
 import "../Home";
 
 function GetLinkGuide({ onLogout }) {
-  // Hook để set title + description
-  function usePageMeta(title, description) {
-    useEffect(() => {
-      if (title) document.title = title;
-      if (description) {
-        let el = document.querySelector('meta[name="description"]');
-        if (!el) {
-          el = document.createElement("meta");
-          el.setAttribute("name", "description");
-          document.head.appendChild(el);
-        }
-        el.setAttribute("content", description);
-      }
-    }, [title, description]);
-  }
+  // Set page title + description đúng chuẩn React hooks
+  useEffect(() => {
+    document.title = "Locket TDTU - Hướng dẫn lấy link Locket";
+    let el = document.querySelector('meta[name="description"]');
+    if (!el) {
+      el = document.createElement("meta");
+      el.setAttribute("name", "description");
+      document.head.appendChild(el);
+    }
+    el.setAttribute(
+      "content",
+      "Hướng dẫn chi tiết cách lấy link profile Locket để kết bạn với sinh viên TDTU."
+    );
+
+    // Canonical cho trang này
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", "https://tdtu.locket-wan.top/Hdlink");
+
+    return () => {
+      // Khôi phục lại khi rời trang
+      document.title = "Locket TDTU - Kết nối sinh viên Tôn Đức Thắng";
+      if (el) el.setAttribute("content", "Locket TDTU – Ứng dụng kết nối sinh viên Đại học Tôn Đức Thắng. Chia sẻ khoảnh khắc, kết bạn và cập nhật trạng thái với bạn bè cùng trường.");
+      if (canonical) canonical.setAttribute("href", "https://tdtu.locket-wan.top/");
+    };
+  }, []);
 
   return (
     <div className="">
-      {usePageMeta(
-        "Locket - Hướng dẫn lấy link",
-        "Hướng dẫn chi tiết cách lấy link Locket để chia sẻ cho bạn bè."
-      )}
 
       {/* Background động */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-gray-50">
