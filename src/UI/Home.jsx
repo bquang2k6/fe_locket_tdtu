@@ -3,7 +3,8 @@ import Sidebar from "./Sidebar";
 import Addlocket from "./Addlocket";
 import FriendList from "./Friend/FriendList";
 import "./home.css";
-import PopupNotification from "./PopupNotification/index"
+import PopupNotification from "./PopupNotification/index";
+import Footer from "./Footer";
 
 function Home({ studentId, onLogout }) {
 const [friends, setFriends] = useState([]);
@@ -47,14 +48,16 @@ return ( <div className="">
     </div>
 
 
-  <div className="">
+  <div className="flex flex-col min-h-screen w-full">
     {/* Sidebar */}
     <Sidebar onLogout={onLogout} />
 
     <div className="h-20"></div>
-    <div className="min-h-screen flex flex-col -px-1 items-center -ml-5 -mr-5 -mt-10 ">
+
+    {/* Nội dung chính — flex-1 để đẩy footer xuống đáy */}
+    <div className="flex-1 flex flex-col w-full items-center px-4 py-6">
       {/* Card chào mừng */}
-      <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-10 mb-10 relative overflow-hidden border border-white/20 hover:shadow-3xl hover:scale-[1.02] transition-all duration-500">
+      <div className="w-full max-w-4xl bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-10 mb-10 relative overflow-hidden border border-white/20 hover:shadow-3xl hover:scale-[1.02] transition-all duration-500">
         <h3 className="font-semibold gradient-text disable-select">
           Xin chào Tdtu 🎓
         </h3>
@@ -66,14 +69,15 @@ return ( <div className="">
 
       {/* Add + List */}
       <div className="w-full max-w-4xl space-y-8">
-
-
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl p-6 border border-white/20 hover:shadow-2xl transition-all duration-500">
           <FriendList friends={friends} />
         </div>
       </div>
       <PopupNotification />
     </div>
+
+    {/* Footer luôn ở đáy */}
+    <Footer />
   </div>
 
   <style>{`
